@@ -1,34 +1,34 @@
 import 'dart:convert';
 
 class ItemModel {
-  final int? id;
-  final bool? deleted;
+  final int id;
+  final bool deleted;
   final String? type;
-  final String? by;
-  final int? time;
-  final String? text;
-  final bool? dead;
+  final String by;
+  final int time;
+  final String text;
+  final bool dead;
   final int? parent;
-  final List<dynamic>? kids;
+  final List<dynamic> kids;
   final String? url;
   final int? score;
-  final String? title;
-  final int? decendants;
+  final String title;
+  final int descendants;
 
   ItemModel.fromJson(Map<String, dynamic> parsedJson)
       : id = parsedJson['id'],
-        deleted = parsedJson['deleted'],
+        deleted = parsedJson['deleted'] ?? false,
         type = parsedJson['type'],
-        by = parsedJson['by'],
+        by = parsedJson['by'] ?? "",
         time = parsedJson['time'],
-        text = parsedJson['text'],
-        dead = parsedJson['dead'],
+        text = parsedJson['text'] ?? "",
+        dead = parsedJson['dead'] ?? false,
         parent = parsedJson['parent'],
-        kids = parsedJson['kids'],
+        kids = parsedJson['kids'] ?? [],
         url = parsedJson['url'],
         score = parsedJson['score'],
-        title = parsedJson['title'],
-        decendants = parsedJson['id'];
+        title = parsedJson['title'] ?? "",
+        descendants = parsedJson['descendants'] ?? 0;
 
   ItemModel.fromDb(Map<String, dynamic> dbMaps)
       : id = dbMaps['id'],
@@ -43,7 +43,7 @@ class ItemModel {
         url = dbMaps['url'],
         score = dbMaps['score'],
         title = dbMaps['title'],
-        decendants = dbMaps['id'];
+        descendants = dbMaps['descendants'];
 
   Map<String, dynamic> get map {
     return <String, dynamic>{
@@ -56,7 +56,7 @@ class ItemModel {
       "url": url,
       "score": score,
       "title": title,
-      "decendants": decendants,
+      "descendants": descendants,
       "dead": dead == true ? 1 : 0,
       "deleted": deleted == true ? 1 : 0,
       "kids": jsonEncode(kids),

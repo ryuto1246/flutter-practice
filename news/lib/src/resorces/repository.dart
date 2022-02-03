@@ -2,6 +2,16 @@ import 'news_api_provider.dart';
 import 'news_db_provider.dart';
 import '../models/item_model.dart';
 
+abstract class Source {
+  Future<List<int>>? fetchTopIds();
+  Future<ItemModel?> fetchItem(int id);
+}
+
+abstract class Cache {
+  Future<int> addItem(ItemModel item);
+  Future<int> clear();
+}
+
 class Repository {
   List<Source> sources = <Source>[
     newsDbProvider,
@@ -31,13 +41,10 @@ class Repository {
 
     return item!;
   }
-}
 
-abstract class Source {
-  Future<List<int>>? fetchTopIds();
-  Future<ItemModel?> fetchItem(int id);
-}
-
-abstract class Cache {
-  Future<int> addItem(ItemModel item);
+  clearCache() async {
+    for (Cache cache in caches) {
+      await cache.clear();
+    }
+  }
 }
